@@ -1,0 +1,117 @@
+body {
+  background-color: #111;
+  /* color: white; */
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+ol {
+  list-style: none;
+  padding-left: 0px;
+}
+
+li {
+  margin-bottom: 1em;
+}
+
+aside {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 15%; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #111; /* Black */
+  color: white;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+  border: 2px yellow solid;
+}
+
+header {
+  margin-left: 17%;
+  text-align: center;
+  background-color: #111;
+  color: white;
+}
+
+main {
+  margin-left: 15%;
+  padding-left: 2%;
+  border: 3px yellow solid;
+  background-color: red;
+  padding-bottom: 100%;
+}
+
+form {
+  border: 2px yellow solid;
+  position: fixed;
+  left: 0;
+  padding-left: 16%;
+  padding-top: 1em;
+  bottom: 0px;
+  width: 100%;
+  display: block;
+  background-color: #111;
+  color: white;
+  /* z-index: 2; */
+}
+
+aside div {
+  margin-bottom: 1em;
+  padding-left: 1em;
+}
+
+aside div:hover {
+  color: yellow;
+}
+
+aside div.selected {
+  color: red;
+}
+
+form input {
+  margin-bottom: .5em;
+}
+
+form input:nth-child(3) {
+  width: 80%;
+  height: 3em;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
