@@ -1,13 +1,13 @@
 import React from 'react'
 import MessageList from './MessageList'
 import MessageForm from '../components/MessageForm'
+import { ActionCableConsumer } from 'react-actioncable-provider'
 
 class MessageContainer extends React.Component {
 
   state = {
     name: null,
     messages: [],
-    interval: null
   }
 
   getMessages = () => {
@@ -20,8 +20,8 @@ class MessageContainer extends React.Component {
 
   componentDidMount(){
     this.getMessages()
-    const interval = setInterval(this.getMessages, 3000)
-    this.setState({ interval })
+    // const interval = setInterval(this.getMessages, 3000)
+    // this.setState({ interval })
   }
 
   componentDidUpdate(prevProps){
@@ -31,8 +31,12 @@ class MessageContainer extends React.Component {
   }
 
   componentWillUnmount(){
-    clearInterval(this.state.interval)
+    // clearInterval(this.state.interval)
   }
+
+  onReceived = (message) => {
+    console.log(message)
+    this.setState({messages: [...this.state.messages, message]})}
 
   addMessage = (message) => {
     // const newMessage = {...message, id: uuidv4()}
@@ -46,17 +50,15 @@ class MessageContainer extends React.Component {
       // {     username: "Terminator", content: "Hello World", channel_id: this.props.channel                   }
       body: JSON.stringify(message),
     })
-    .then(response => response.json())
-    .then(newMessage => this.setState({messages: [...this.state.messages, newMessage]}))
   }
 
   render(){
     return(
-      <>
+      <ActionCableConsumer channel={{channel: "ChannelChannel", id: this.props.channel}} onReceived={this.onReceived}>
         <h3>#{this.state.name}</h3>
         <MessageForm addMessage={this.addMessage}/>
         <MessageList messages={this.state.messages} updateStateFromJSON={this.updateStateFromJSON}/>
-      </>
+      </ActionCableConsumer>
     )
   }
 }
