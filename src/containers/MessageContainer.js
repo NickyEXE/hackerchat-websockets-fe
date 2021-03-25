@@ -1,56 +1,16 @@
 import React from 'react'
 import MessageList from './MessageList'
 import MessageForm from '../components/MessageForm'
-// import { ActionCableConsumer } from 'react-actioncable-provider'
+import Socket from '../services/Socket'
 
-const socket = new WebSocket("ws://localhost:3000/cable");
-     // When the connection is first created, this code runs subscribing the client to a specific chatroom stream in the ChatRoomChannel.
-    // socket.onopen = function(event) {
-    //     console.log('WebSocket is connected.');
-    //     const msg = {
-    //         command: 'subscribe',
-    //         identifier: JSON.stringify({
-    //             id: chatRoomId,
-    //             channel: 'ChannelChannel'
-    //         }),
-    //     };
-    //     socket.send(JSON.stringify(msg));
-    // };
-
-    // // When the connection is closed, this code will run.
-    // socket.onclose = function(event) {
-    //      console.log('WebSocket is closed.');
-    // };
-    // // When a message is received through the websocket, this code will run.
-    // socket.onmessage = function(event) {
-    //     const response = event.data;
-    //     const msg = JSON.parse(response);
-
-    //     // Ignores pings.
-    //     if (msg.type === "ping") {
-    //         return;
-    //     }
-    //     console.log("FROM RAILS: ", msg);
-
-    //     // Renders any newly created messages onto the page.
-    //     if (msg.message) {
-    //         renderMessage(msg.message)
-    //     }
-
-    // };
-
-    // // When an error occurs through the websocket connection, this code is run printing the error message.
-    // socket.onerror = function(error) {
-    //     console.log('WebSocket Error: ' + error);
-    // };
-
+// const socket = new Socket("ws://localhost:3000/cable");
 
 class MessageContainer extends React.Component {
 
   state = {
     name: null,
     messages: [],
-    acc: null,
+    socket: null
   }
 
   getMessages = () => {
@@ -59,27 +19,31 @@ class MessageContainer extends React.Component {
     .then(this.updateStateFromJSON)
   }
 
-  updateStateFromJSON = json => this.setState({messages: json.messages, name: json.name})
+  updateStateFromJSON = json => {
+    console.log(json)
+    this.setState({messages: json.messages, name: json.name})
+  }
 
   componentDidMount(){
     this.getMessages()
+    this.subscribe()
   }
 
   componentDidUpdate(prevProps){
     if (prevProps.channel !== this.props.channel){
+      // this.state.socket && this.state.socket.unsubscribe()
       this.getMessages()
+      this.subscribe()
     }
   }
 
   subscribe = () => {
-    const msg = {
-      command: 'subscribe',
-      identifier: JSON.stringify({
-          id: this.props.channel,
-          channel: 'ChannelChannel'
-      }),
-    };
-    socket.send(JSON.stringify(msg));
+    if (this.props.channel){
+      const socket = new Socket("ws://localhost:3000/cable", this.props.channel, this.onReceived);
+      // socket.subscribe(this.props.channel)
+      // socket.setHandler(this.updateStateFromJSON)
+      this.setState({socket: socket})
+    }
   }
 
   onReceived = (message) => this.setState({messages: [...this.state.messages, message]})
@@ -94,15 +58,13 @@ class MessageContainer extends React.Component {
     })
   }
 
-
-
   render(){
     return(
-        <ActionCableConsumer channel={{channel: "ChannelChannel", id: this.props.channel}} onReceived={this.onReceived}>
+      <>
         <h3>#{this.state.name}</h3>
         <MessageForm addMessage={this.addMessage}/>
         <MessageList messages={this.state.messages} updateStateFromJSON={this.updateStateFromJSON}/>
-      </ActionCableConsumer>
+      </>
     )
   }
 }

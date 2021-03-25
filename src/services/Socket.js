@@ -1,24 +1,27 @@
 export default class Socket {
 
-  constructor(api){
+  constructor(api, id, handler){
     this.api = api
-    this.socket = new WebSocket(api);
-    this.messageHandler = console.log
+    this.subscribe(id)
     this.addListener()
+    this.messageHandler = handler
   }
 
   setHandler = (func) => this.messageHandler = func
 
   subscribe = (id) => {
+    this.socket = new WebSocket(this.api)
     this.id = id
-    const msg = {
-      command: 'subscribe',
-      identifier: JSON.stringify({
-          id: this.id,
-          channel: 'ChannelChannel'
-      }),
+    this.socket.onopen = () => {
+      const msg = {
+        command: 'subscribe',
+        identifier: JSON.stringify({
+            id: id,
+            channel: 'ChannelChannel'
+        }),
+      }
+      this.socket.send(JSON.stringify(msg))
     }
-    this.socket.send(JSON.stringify(msg));
   }
 
   unsubscribe = () => {
@@ -40,6 +43,7 @@ export default class Socket {
       if (msg.type === "ping") {
           return;
       }
+      console.log(msg)
       // Renders any newly created messages onto the page.
       if (msg.message) {
           this.messageHandler(msg.message)
