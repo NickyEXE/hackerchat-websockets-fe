@@ -9,7 +9,6 @@ class App extends Component {
 
   state = {
     channel: null,
-    socket: null
   }
 
   changeChannel = (id) => this.setState({ channel: id })
