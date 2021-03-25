@@ -3,13 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {ActionCableProvider} from 'react-actioncable-provider';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ActionCableProvider url={"ws://localhost:3000/cable"}>
-      <App />
-    </ActionCableProvider>
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
