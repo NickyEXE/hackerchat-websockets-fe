@@ -8,7 +8,7 @@ import Welcome from './components/Welcome'
 class App extends Component {
 
   state = {
-    channel: null
+    channel: null,
   }
 
   changeChannel = (id) => this.setState({ channel: id })

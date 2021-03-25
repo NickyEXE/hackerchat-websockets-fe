@@ -1,13 +1,16 @@
 import React from 'react'
 import MessageList from './MessageList'
 import MessageForm from '../components/MessageForm'
+import Socket from '../services/Socket'
+
+// const socket = new Socket("ws://localhost:3000/cable");
 
 class MessageContainer extends React.Component {
 
   state = {
     name: null,
     messages: [],
-    interval: null
+    socket: null
   }
 
   getMessages = () => {
@@ -16,38 +19,45 @@ class MessageContainer extends React.Component {
     .then(this.updateStateFromJSON)
   }
 
-  updateStateFromJSON = json => this.setState({messages: json.messages, name: json.name})
+  updateStateFromJSON = json => {
+    console.log(json)
+    this.setState({messages: json.messages, name: json.name})
+  }
 
   componentDidMount(){
     this.getMessages()
-    const interval = setInterval(this.getMessages, 3000)
-    this.setState({ interval })
+    this.subscribe()
   }
 
   componentDidUpdate(prevProps){
     if (prevProps.channel !== this.props.channel){
+      this.state.socket && this.state.socket.unsubscribe()
       this.getMessages()
+      this.subscribe()
     }
   }
 
   componentWillUnmount(){
-    clearInterval(this.state.interval)
+    this.state.socket && this.state.socket.unsubscribe()
   }
 
+  subscribe = () => {
+    if (this.props.channel){
+      const socket = new Socket("ws://localhost:3000/cable", this.props.channel, this.onReceived);
+      this.setState({socket: socket})
+    }
+  }
+
+  onReceived = (message) => this.setState({messages: [...this.state.messages, message]})
+
   addMessage = (message) => {
-    // const newMessage = {...message, id: uuidv4()}
     fetch(`http://localhost:3000/channels/${this.props.channel}/messages`, {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',
       },
-      // {...message, channel_id: this.props.channel}
-      // message: {username: "Terminator", content: "Hello World"}
-      // {     username: "Terminator", content: "Hello World", channel_id: this.props.channel                   }
       body: JSON.stringify(message),
     })
-    .then(response => response.json())
-    .then(newMessage => this.setState({messages: [...this.state.messages, newMessage]}))
   }
 
   render(){
