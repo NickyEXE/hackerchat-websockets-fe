@@ -8,7 +8,7 @@ This repo is only for the front end and requires a backend set up independently 
 
 Full details on how to run this are available in the boilerplate React repo below, but cloning this down and running `yarn install` will install the packages locally, after which you can run `yarn start` to open this up on localhost:3001.
 
-It'll be fairly useless unless you use and set up the back end portion of this app (available here)[https://github.com/NickyEXE/hackerchat-websockets-be].
+It'll be fairly useless unless you use and set up the back end portion of this app [available here](https://github.com/NickyEXE/hackerchat-websockets-be).
 
 # What's with the murder theme?
 
@@ -16,6 +16,22 @@ The lecture took place on Halloween.
 
 # Component Hierarchy (The Pony)
 
+![Component Hierarchy](https://i.imgur.com/pt5ZMYQ.png)
+
+# WebSockets
+
+The backend separates each channel into a ChannelChannel and separates them by their id on the backend. The service class Socket.js will handle all of this for you by initializing a socket:
+
+```javascript
+// example use
+const websocketRoute = "ws://localhost:3000/cable"
+const channelId = this.props.channel
+const callback = console.log
+
+const socket = new Socket(websocketRoute, channelId, callback);
+```
+
+To unsubscribe from a socket, call unsubscribe on your instance of a socket: `socket.unsubscribe()`
 
 # React Boilerplate: Getting Started with Create React App
 
