@@ -7,8 +7,6 @@ export default class Socket {
     this.messageHandler = handler
   }
 
-  setHandler = (func) => this.messageHandler = func
-
   subscribe = (id) => {
     this.socket = new WebSocket(this.api)
     this.id = id
@@ -43,7 +41,6 @@ export default class Socket {
       if (msg.type === "ping") {
           return;
       }
-      console.log(msg)
       // Renders any newly created messages onto the page.
       if (msg.message) {
           this.messageHandler(msg.message)

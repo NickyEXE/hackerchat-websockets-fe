@@ -2,7 +2,6 @@ import React from 'react'
 import Message from '../components/Message'
 
 function MessageList(props){
-  console.log(props.messages)
   return (
   <>
     <ol>

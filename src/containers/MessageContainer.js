@@ -31,17 +31,19 @@ class MessageContainer extends React.Component {
 
   componentDidUpdate(prevProps){
     if (prevProps.channel !== this.props.channel){
-      // this.state.socket && this.state.socket.unsubscribe()
+      this.state.socket && this.state.socket.unsubscribe()
       this.getMessages()
       this.subscribe()
     }
   }
 
+  componentWillUnmount(){
+    this.state.socket && this.state.socket.unsubscribe()
+  }
+
   subscribe = () => {
     if (this.props.channel){
       const socket = new Socket("ws://localhost:3000/cable", this.props.channel, this.onReceived);
-      // socket.subscribe(this.props.channel)
-      // socket.setHandler(this.updateStateFromJSON)
       this.setState({socket: socket})
     }
   }
