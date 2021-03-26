@@ -33,6 +33,8 @@ const socket = new Socket(websocketRoute, channelId, callback);
 
 To unsubscribe from a socket, call unsubscribe on your instance of a socket: `socket.unsubscribe()`
 
+A full explanation of how this class uses JS to interact with the Rails backend can be found [here](https://github.com/NickyEXE/hackerchat-websockets-be#using-websockets).
+
 # React Boilerplate: Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
