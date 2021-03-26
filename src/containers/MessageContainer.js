@@ -19,8 +19,8 @@ class MessageContainer extends React.Component {
     .then(this.updateStateFromJSON)
   }
 
+  // used for initial fetch and for likes
   updateStateFromJSON = json => {
-    console.log(json)
     this.setState({messages: json.messages, name: json.name})
   }
 
