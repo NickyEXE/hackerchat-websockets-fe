@@ -23,16 +23,16 @@ export default class MessageForm extends Component {
 
   render(){
     return(
-    <form onSubmit={this.onSubmit}>
-      <label>
-        Username:
-        <input type="content" name="username" value={this.state.username} onChange={this.onChange} />
-      </label>
-      <br/>
-      <input type="content" name="content" value={this.state.content} onChange={this.onChange} />
-      <br/>
-      <input type="submit" value="Submit" />
-    </form>
+      <form onClick={console.log} onSubmit={this.onSubmit}>
+        <label>
+          Username:
+          <input type="content" name="username" value={this.state.username} onChange={this.onChange} />
+        </label>
+        <br/>
+        <input type="content" name="content" value={this.state.content} onChange={this.onChange} />
+        <br/>
+        <input type="submit" value="Submit" />
+      </form>
     )
   }
 

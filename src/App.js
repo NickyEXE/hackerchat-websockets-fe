@@ -14,13 +14,14 @@ class App extends Component {
   changeChannel = (id) => this.setState({ channel: id })
 
   render(){
-    return (<>
+    return (
+      <>
         <header>
         <h1 onClick={() => this.changeChannel(null)}>Welcome to Hacker Chat</h1>
         <h3>A place for hackers and slashers to cut loose and cut flesh</h3>
         </header>
         <ChannelContainer changeChannel={this.changeChannel}/>
-      <main>{this.state.channel ? <MessageContainer channel={this.state.channel}/> : <Welcome/>}</main>
+        <main>{this.state.channel ? <MessageContainer channel={this.state.channel}/> : <Welcome/>}</main>
       </>
     );
   }
